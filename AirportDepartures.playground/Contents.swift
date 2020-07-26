@@ -65,7 +65,7 @@ class DepartureBoard {
 //: e. Stretch: Look at the API for [`DateComponents`](https://developer.apple.com/documentation/foundation/datecomponents?language=objc) for creating a specific time
 
 
-let kalvin = Flight(destination: "Atlanta", airline: "American Airline", departureTime: Date(), terminal: "A3", code: "D48574", status: .onTime)
+let kalvin = Flight(destination: "Atlanta", airline: "American Airline", departureTime: Date(), terminal: "A3", code: "D48574", status: .scheduled)
 let you = Flight(destination: "Los Angeles", airline: "Delta", departureTime: nil, terminal: "C2", code: "Ex9458", status: .canceled)
 let us = Flight(destination: "Fuzhou",airline: "Cathay Pacific", departureTime: DateComponents(calendar: .current, timeZone: .current, year: 2020, month: 7, day: 19, hour: 10, minute: 50, second: 4).date!, terminal: nil, code: "L58473", status: .delayed)
 let them = Flight(destination: "New Wark", airline: "Spirit", departureTime: nil, terminal: "C2", code: "A739", status: .scheduled)
@@ -128,18 +128,6 @@ func printDepartures2(_ departureBoard: DepartureBoard){
             let timeUnwrapped = "TBD"
             print("Destination: \(flights.destination), Airline: \(flights.airline), Flight: \(flights.code), Departure time: \(timeUnwrapped), Terminal: \(flights.terminal ?? "TBD"), Status: \(flights.status.rawValue) ")
         }
-//        if flights.status == .canceled{
-//            print("We're sorry your flight to \(flights.destination) was canceled, here is a $500 voucher")
-//            continue
-//        } else if flights.status == .scheduled {
-//            print("Your flight to \(flights.destination) is scheduled to depart at \(timeUnwrapped) from terminal: \(flights.terminal ?? "TBD")")
-//        } else if (flights.status == .boarding) {
-//            print("Your flight is boarding, please head to terminal: \(flights.terminal) immediately. The doors are closing soon.")
-//        }
-//        guard let terminalUnwrapped = flights.terminal else {
-//            print(
-//            break
-//        }
     }
 }
 printDepartures2(departure)
@@ -159,20 +147,32 @@ printDepartures2(departure)
 //: d. Call the `alertPassengers()` function on your `DepartureBoard` object below
 //:
 //: f. Stretch: Display a custom message if the `terminal` is `nil`, tell the traveler to see the nearest information desk for more details.
-//extension DepartureBoard {
-//    func alertPassengers(){
-//        for flights in self.departuredFlight {
-//            var timeUnwrapped = ""
-//            if flights.departureTime != nil{
-//                timeUnwrapped = flights.departureTime.String(from: Date())
-//            } else {
-//                timeUnwrapped = "TBD"
-//
-//            }
-//        }
-//    }
-//}
-//print(departure.alertPassengers)
+extension DepartureBoard {
+    func alertPassengers(){
+        for flights in self.departuredFlight {
+            var timeUnwrapped = ""
+            if flights.departureTime != nil{
+                timeUnwrapped = dateFormat.string(from: flights.departureTime!)
+            } else {
+                timeUnwrapped = "TBD"
+            }
+            guard flights.terminal != nil else {
+                print("Attention travelers! Please visit the nearest information desk if the terminal number is not listed on your ticket")
+                continue
+            }
+            if flights.status == .canceled{
+                print("We're sorry your flight to \(flights.destination) was canceled, here is a $500 voucher")
+                continue
+            } else if flights.status == .scheduled {
+                print("Your flight to \(flights.destination) is scheduled to depart at \(timeUnwrapped) from terminal: \(flights.terminal!)")
+            } else if (flights.status == .boarding) {
+                //terminal must not be nil if it is boarding, the guard above makes sure that terminal is never nil
+                print("Your flight is boarding, please head to terminal: \(flights.terminal!) immediately. The doors are closing soon.")
+            }
+        }
+    }
+}
+print(departure.alertPassengers())
 
 
 //: ## 6. Create a free-standing function to calculate your total airfair for checked bags and destination
@@ -192,6 +192,10 @@ printDepartures2(departure)
 //: e. Make sure to cast the numbers to the appropriate types so you calculate the correct airfare
 //:
 //: f. Stretch: Use a [`NumberFormatter`](https://developer.apple.com/documentation/foundation/numberformatter) with the `currencyStyle` to format the amount in US dollars.
+//func calculateAirfare(checkedBags: Int, distance: Int, travelers: Int) -> Double {
+//    var bagCost = checkedBags * 25
+//    let distance =
+//}
 
 
 
