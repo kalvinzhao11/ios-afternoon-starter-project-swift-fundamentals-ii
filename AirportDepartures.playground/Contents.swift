@@ -23,6 +23,7 @@ enum FlightStatus: String {
     case delayed
     case onTime = "on time"
     case landed
+    case boarding
     
 }
 
@@ -35,7 +36,7 @@ struct Flight {
     let destination: String
     let airline: String
     var departureTime: Date?
-    var Terminal: String?
+    var terminal: String?
     let code: String
     var status: FlightStatus
     
@@ -64,13 +65,16 @@ class DepartureBoard {
 //: e. Stretch: Look at the API for [`DateComponents`](https://developer.apple.com/documentation/foundation/datecomponents?language=objc) for creating a specific time
 
 
-let kalvin = Flight(destination: "Atlanta", airline: "American Airline", departureTime: Date(), Terminal: "A3", code: "D48574", status: .onTime)
-let you = Flight(destination: "Los Angeles", airline: "Delta", departureTime: nil, Terminal: "C2", code: "Ex9458", status: .canceled)
-let us = Flight(destination: "Fuzhou",airline: "Cathay Pacific", departureTime: DateComponents(calendar: .current, timeZone: .current, year: 2020, month: 7, day: 19, hour: 10, minute: 50, second: 4).date!, Terminal: nil, code: "L58473", status: .delayed)
+let kalvin = Flight(destination: "Atlanta", airline: "American Airline", departureTime: Date(), terminal: "A3", code: "D48574", status: .onTime)
+let you = Flight(destination: "Los Angeles", airline: "Delta", departureTime: nil, terminal: "C2", code: "Ex9458", status: .canceled)
+let us = Flight(destination: "Fuzhou",airline: "Cathay Pacific", departureTime: DateComponents(calendar: .current, timeZone: .current, year: 2020, month: 7, day: 19, hour: 10, minute: 50, second: 4).date!, terminal: nil, code: "L58473", status: .delayed)
+let them = Flight(destination: "New Wark", airline: "Spirit", departureTime: nil, terminal: "C2", code: "A739", status: .scheduled)
+
 var flights: [Flight] = []
 flights.append(kalvin)
 flights.append(you)
 flights.append(us)
+flights.append(them)
 print(flights)
 
 let jfk = Airport(name: "John F. Kennedy International Airport", iata: "JFK")
@@ -112,11 +116,33 @@ printDepartures(departure)
 //:     Destination: Los Angeles Airline: Delta Air Lines Flight: KL 6966 Departure Time:  Terminal: 4 Status: Canceled
 //:     Destination: Rochester Airline: Jet Blue Airways Flight: B6 586 Departure Time: 1:26 PM Terminal:  Status: Scheduled
 //:     Destination: Boston Airline: KLM Flight: KL 6966 Departure Time: 1:26 PM Terminal: 4 Status: Scheduled
+let dateFormat = DateFormatter()
+dateFormat.dateFormat = "HH:mm"
 func printDepartures2(_ departureBoard: DepartureBoard){
-    for flights in departureBoard {
-        if let
+//    let dateFormat = DateFormatter()
+//    dateFormat.dateFormat
+    for flights in departureBoard.departuredFlight {
+        if let timeUnwrapped = flights.departureTime{
+            print("Destination: \(flights.destination), Airline: \(flights.airline), Flight: \(flights.code), Departure time: \(dateFormat.string(from: timeUnwrapped)), Terminal: \(flights.terminal ?? ""), Status: \(flights.status.rawValue) ")
+        } else {
+            let timeUnwrapped = "TBD"
+            print("Destination: \(flights.destination), Airline: \(flights.airline), Flight: \(flights.code), Departure time: \(timeUnwrapped), Terminal: \(flights.terminal ?? "TBD"), Status: \(flights.status.rawValue) ")
+        }
+//        if flights.status == .canceled{
+//            print("We're sorry your flight to \(flights.destination) was canceled, here is a $500 voucher")
+//            continue
+//        } else if flights.status == .scheduled {
+//            print("Your flight to \(flights.destination) is scheduled to depart at \(timeUnwrapped) from terminal: \(flights.terminal ?? "TBD")")
+//        } else if (flights.status == .boarding) {
+//            print("Your flight is boarding, please head to terminal: \(flights.terminal) immediately. The doors are closing soon.")
+//        }
+//        guard let terminalUnwrapped = flights.terminal else {
+//            print(
+//            break
+//        }
     }
 }
+printDepartures2(departure)
 
 
 //: ## 5. Add an instance method to your `DepatureBoard` class (above) that can send an alert message to all passengers about their upcoming flight. Loop through the flights and use a `switch` on the flight status variable.
@@ -133,8 +159,20 @@ func printDepartures2(_ departureBoard: DepartureBoard){
 //: d. Call the `alertPassengers()` function on your `DepartureBoard` object below
 //:
 //: f. Stretch: Display a custom message if the `terminal` is `nil`, tell the traveler to see the nearest information desk for more details.
-
-
+//extension DepartureBoard {
+//    func alertPassengers(){
+//        for flights in self.departuredFlight {
+//            var timeUnwrapped = ""
+//            if flights.departureTime != nil{
+//                timeUnwrapped = flights.departureTime.String(from: Date())
+//            } else {
+//                timeUnwrapped = "TBD"
+//
+//            }
+//        }
+//    }
+//}
+//print(departure.alertPassengers)
 
 
 //: ## 6. Create a free-standing function to calculate your total airfair for checked bags and destination
