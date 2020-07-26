@@ -44,7 +44,7 @@ class DepartureBoard {
     let airport: Airport
     
     init(departuredFlight: [Flight], airport: Airport){
-        self.departuredFlight = []
+        self.departuredFlight = departuredFlight
         self.airport = airport
     }
 }
@@ -69,12 +69,14 @@ var flights: [Flight] = []
 flights.append(kalvin)
 flights.append(you)
 flights.append(us)
+print(flights)
 
 let jfk = Airport(name: "John F. Kennedy International Airport", iata: "JFK")
 let clt = Airport(name: "Charlotte Douglas International Airport", iata: "CLT")
 let foc = Airport(name: "Fuzhou Changle International Airport", iata: "FOC")
 
 let departure = DepartureBoard(departuredFlight: flights, airport: clt)
+//departure.append()
 
 
 
@@ -87,10 +89,11 @@ let departure = DepartureBoard(departuredFlight: flights, airport: clt)
 //:
 //: d. Print out the current DepartureBoard you created using the function
 func printDepartures(_ departureBoard: DepartureBoard) {
-    for (departureInfo in departureBoard){
-        print("hi")
+    for flights in departureBoard.departuredFlight{
+        print(flights.status.rawValue) //raw value gets the string version of the status enum
     }
 }
+printDepartures(departure)
 
 
 //: ## 4. Make a second function to print print an empty string if the `departureTime` is nil
