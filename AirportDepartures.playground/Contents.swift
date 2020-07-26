@@ -32,6 +32,8 @@ struct Airport {
 }
 
 struct Flight {
+    let destination: String
+    let airline: String
     var departureTime: Date?
     var Terminal: String?
     let code: String
@@ -62,9 +64,9 @@ class DepartureBoard {
 //: e. Stretch: Look at the API for [`DateComponents`](https://developer.apple.com/documentation/foundation/datecomponents?language=objc) for creating a specific time
 
 
-let kalvin = Flight(departureTime: Date(), Terminal: "A3", code: "D48574", status: .onTime)
-let you = Flight(departureTime: nil, Terminal: "C2", code: "Ex9458", status: .canceled)
-let us = Flight(departureTime: DateComponents(calendar: .current, timeZone: .current, year: 2020, month: 7, day: 19, hour: 10, minute: 50, second: 4).date!, Terminal: nil, code: "L58473", status: .delayed)
+let kalvin = Flight(destination: "Atlanta", airline: "American Airline", departureTime: Date(), Terminal: "A3", code: "D48574", status: .onTime)
+let you = Flight(destination: "Los Angeles", airline: "Delta", departureTime: nil, Terminal: "C2", code: "Ex9458", status: .canceled)
+let us = Flight(destination: "Fuzhou",airline: "Cathay Pacific", departureTime: DateComponents(calendar: .current, timeZone: .current, year: 2020, month: 7, day: 19, hour: 10, minute: 50, second: 4).date!, Terminal: nil, code: "L58473", status: .delayed)
 var flights: [Flight] = []
 flights.append(kalvin)
 flights.append(you)
@@ -110,7 +112,11 @@ printDepartures(departure)
 //:     Destination: Los Angeles Airline: Delta Air Lines Flight: KL 6966 Departure Time:  Terminal: 4 Status: Canceled
 //:     Destination: Rochester Airline: Jet Blue Airways Flight: B6 586 Departure Time: 1:26 PM Terminal:  Status: Scheduled
 //:     Destination: Boston Airline: KLM Flight: KL 6966 Departure Time: 1:26 PM Terminal: 4 Status: Scheduled
-
+func printDepartures2(_ departureBoard: DepartureBoard){
+    for flights in departureBoard {
+        if let
+    }
+}
 
 
 //: ## 5. Add an instance method to your `DepatureBoard` class (above) that can send an alert message to all passengers about their upcoming flight. Loop through the flights and use a `switch` on the flight status variable.
